@@ -1,24 +1,54 @@
-import { useState, useEffect } from "react";
+import ContactForm from "../ContactForm/ContactForm.jsx";
+import SearchBox from "../SearchBox/SearchBox.jsx";
+import ContactList from "../ContactList/ContactList.jsx";
+import { useEffect, useState } from "react";
+import css from "./App.module.css";
+import { nanoid } from "nanoid";
 
 const App = () => {
-  const [clicks, setClicks] = useState(() => {
-    const savedClicks = window.localStorage.getItem("saved-clicks");
-    if (savedClicks !== null) {
-      return JSON.parse(savedClicks);
+  const [contacts, setContacts] = useState(() => {
+    const savedContacts = window.localStorage.getItem("contacts");
+    if (savedContacts !== null) {
+      return JSON.parse(savedContacts);
     }
-    return 0;
+    return [];
   });
 
   useEffect(() => {
-    window.localStorage.setItem("saved-clicks", clicks);
-  }, [clicks]);
+    window.localStorage.setItem("contacts", JSON.stringify(contacts));
+  }, [contacts]);
+
+  const [search, setSearch] = useState("");
+
+  const filteredContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handleChange = (event) => {
+    setSearch(event.target.value);
+  };
+
+  const handleSubmit = (valuesFilds, actions) => {
+    const addIdContact = { id: nanoid(), ...valuesFilds };
+    setContacts((contacts) => [...contacts, addIdContact]);
+    actions.resetForm();
+  };
+
+  const onDeleteContact = (contactId) => {
+    setContacts((contacts) =>
+      contacts.filter((contact) => contact.id !== contactId)
+    );
+  };
 
   return (
-    <div>
-      <button onClick={() => setClicks(clicks + 1)}>
-        You clicked {clicks} times
-      </button>
-      <button onClick={() => setClicks(0)}>Reset</button>
+    <div className={css.container}>
+      <h1>Phonebook</h1>
+      <ContactForm handleSubmit={handleSubmit} />
+      <SearchBox searchValue={search} handleChange={handleChange} />
+      <ContactList
+        contacts={filteredContacts}
+        onDeleteContact={onDeleteContact}
+      />
     </div>
   );
 };

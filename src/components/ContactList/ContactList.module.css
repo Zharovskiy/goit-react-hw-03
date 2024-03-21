@@ -1,0 +1,14 @@
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contactCard {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 15px 10px 15px 10px;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
