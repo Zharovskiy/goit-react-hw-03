@@ -1,8 +1,15 @@
+import css from "./SearchBox.module.css";
+import { TbSearch } from "react-icons/tb";
+
 const SearchBox = ({ searchValue, handleChange }) => {
   return (
-    <label>
-      <span>Find contacts by name</span>
+    <label className={css.box}>
+      <span className={css.text}>
+        <TbSearch className={css.icon} />
+        Find contacts by name
+      </span>
       <input
+        className={css.input}
         type="text"
         placeholder="Search..."
         value={searchValue}
