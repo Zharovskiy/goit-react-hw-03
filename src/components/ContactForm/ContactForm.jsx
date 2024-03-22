@@ -2,6 +2,10 @@ import { Formik, Form, Field } from "formik";
 import { useId } from "react";
 import * as Yup from "yup";
 import { ErrorMessage } from "formik";
+import css from "./ContactForm.module.css";
+import { LuUserPlus2 } from "react-icons/lu";
+import { RiContactsLine } from "react-icons/ri";
+import { FiPhone } from "react-icons/fi";
 
 const ContactForm = ({ handleSubmit }) => {
   const nameFieldId = useId();
@@ -12,10 +16,10 @@ const ContactForm = ({ handleSubmit }) => {
       .required("Required")
       .min(3, "Too Short!")
       .max(50, "Too Long!"),
-    number: Yup.number()
+    number: Yup.string()
       .required("Required")
       .min(3, "Too Short!")
-      .max(9999999999, "Too Long!"),
+      .max(50, "Too Long!"),
   });
 
   return (
@@ -27,16 +31,40 @@ const ContactForm = ({ handleSubmit }) => {
       }}
       onSubmit={handleSubmit}
     >
-      <Form>
-        <label htmlFor={nameFieldId}>Name</label>
-        <Field type="text" name="name" id={nameFieldId} />
-        <ErrorMessage name="name" as="span" />
+      <Form className={css.box}>
+        <div className={css.fieldBox}>
+          <label className={css.label} htmlFor={nameFieldId}>
+            <RiContactsLine className={css.icon} />
+            Name
+          </label>
+          <Field
+            className={css.field}
+            type="text"
+            name="name"
+            placeholder="Jacob Mercer"
+            id={nameFieldId}
+          />
+          <ErrorMessage className={css.error} name="name" component="span" />
+        </div>
 
-        <label htmlFor={numberFieldId}>Number</label>
-        <Field type="number" name="number" id={numberFieldId} />
-        <ErrorMessage name="number" as="span" />
+        <div className={css.fieldBox}>
+          <label className={css.label} htmlFor={numberFieldId}>
+            <FiPhone className={css.icon} />
+            Number
+          </label>
+          <Field
+            className={css.field}
+            type="number"
+            name="number"
+            placeholder="012-345-67-89"
+            id={numberFieldId}
+          />
+          <ErrorMessage className={css.error} name="number" component="span" />
+        </div>
 
-        <button type="submit">Add contact</button>
+        <button className={css.btn} type="submit">
+          <LuUserPlus2 className={css.addIcon} />
+        </button>
       </Form>
     </Formik>
   );
